@@ -24,6 +24,7 @@
   },
   "homepage": "https://github.com/QubitProducts/react-test-tree",
   "dependencies": {
+    "babelify": "^5.0.4",
     "lodash": "^3.6.0"
   },
   "peerDependencies": {
@@ -35,7 +36,6 @@
     ]
   },
   "devDependencies": {
-    "babelify": "^5.0.4",
     "browserify": "^9.0.3",
     "chai": "^2.1.2",
     "esprima-fb": "^13001.1001.0-dev-harmony-fb",

@@ -1,0 +1,60 @@
+{
+  "name": "react-test-tree",
+  "version": "0.1.0",
+  "description": "Simple and concise React component testing",
+  "main": "index.js",
+  "scripts": {
+    "test": "make test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/QubitProducts/react-test-tree.git"
+  },
+  "keywords": [
+    "react"
+  ],
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://raw.github.com/QubitProducts/react-test-tree/master/LICENSE"
+    }
+  ],
+  "bugs": {
+    "url": "https://github.com/QubitProducts/react-test-tree/issues"
+  },
+  "homepage": "https://github.com/QubitProducts/react-test-tree",
+  "dependencies": {
+    "lodash": "^3.6.0"
+  },
+  "peerDependencies": {
+    "react": "^0.13.0"
+  },
+  "browserify": {
+    "transform": [
+      "babelify"
+    ]
+  },
+  "devDependencies": {
+    "babelify": "^5.0.4",
+    "browserify": "^9.0.3",
+    "chai": "^2.1.2",
+    "esprima-fb": "^13001.1001.0-dev-harmony-fb",
+    "js-yaml": "^3.2.7",
+    "jscs": "^1.12.0",
+    "jsxhint": "^0.13.2",
+    "karma": "^0.12.31",
+    "karma-browserify": "^4.0.0",
+    "karma-chrome-launcher": "^0.1.7",
+    "karma-cli": "0.0.4",
+    "karma-firefox-launcher": "^0.1.4",
+    "karma-mocha": "^0.1.10",
+    "karma-sauce-launcher": "^0.2.10",
+    "karma-spec-reporter": "0.0.16",
+    "mocha": "^2.2.1",
+    "mocha-spec-cov": "0.0.3",
+    "react": "^0.13.1",
+    "sinon": "^1.14.1",
+    "sinon-chai": "^2.7.0",
+    "uglify-js": "^2.4.17"
+  }
+}

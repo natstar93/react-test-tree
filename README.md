@@ -19,6 +19,12 @@ var BozComponent = React.createClass({
   }
 });
 
+var FuzComponent = React.createClass({
+  render: function () {
+    return <div />
+  }
+});
+
 var FooComponent = React.createClass({
   render: function () {
     return (
@@ -29,18 +35,24 @@ var FooComponent = React.createClass({
           <option>gold</option>
         </select>
         <BozComponent ref="boz" />
+        <FuzComponent ref="fuz" />
       </div>
     );
   }
 });
 
-var fooTree = testTree(<FooComponent />);
-fooTree.bar.click();
-fooTree.boz.biz.click();
-fooTree.baz.length === 2;
+var fooTree = testTree(<FooComponent />, {
+  stub: {
+    fuz: null
+  }
+});
+fooTree.bar.click(); // simulates a click
+fooTree.boz.biz.click(); // simulates a click
+fooTree.baz.length === 2; // collection of nodes
+fooTree.fuz === null; // null due to being stubbed out
 ```
 
-In the above example, `react-test-tree` has recursively built a tree with all refs and refCollections represented as nodes of the tree.
+In the above example, `react-test-tree` has recursively built a tree with all refs and refCollections represented as nodes of the tree. Any refs that appear in the `stub` tree config get replaced.
 
 
 ## refs and refCollections
@@ -69,10 +81,72 @@ __Notes__:
 * Your `ref`s and `refCollection`s must not have the same name as any of the public properties of a test node, otherwise they will overwrite them. An error will be thrown if you attempt to do this.
 
 
+## Stubs
+
+It is inevitable that at some point when testing React components you will want to avoid rendering part of a component. Perhaps it might trigger some sideways data loading, or maybe you want to replace it with a mock. `react-test-tree` allows you to quickly and easily stub out any refs in the tree with either `null` or a replacement component:
+
+```jsx
+var MockComponent = React.createClass({
+  render: function () {
+    console.log(this.props.aProp);
+    return <div>{this.props.children}</div>;
+  }
+});
+
+var BizComponent = React.createClass({
+  render: function () {
+    return (
+      <div>
+        <button ref="fuz">Fuz</button>
+      </div>
+    );
+  }
+});
+
+var FooComponent = React.createClass({
+  render: function () {
+    return (
+      <div>
+        <div ref="bar" />
+        <div ref="baz" aProp="hello">Baz</div>
+        <div ref="boz" aProp="hello">Boz</div>
+      </div>
+    );
+  }
+});
+
+var fooTree = testTree(<FooComponent />, {
+  stub: {
+    bar: null,
+    baz: <MockComponent />
+    boz: <MockComponent aProp="foobar">Bazza</MockComponent>,
+    biz: {
+      fuz: null
+    }
+  }
+});
+fooTree.bar; // -> null
+fooTree.biz.fuz; // -> null
+fooTree.baz; // -> replaced with `MockComponent` and renders `Baz` string as child
+fooTree.boz; // -> replaced with `MockComponent` and renders `Bazza` string as child
+```
+
+__Notes__:
+* You can use any falsy stub value other than `undefined` to completely remove a component (e.g. `null`, `false`).
+* The stub object supports nesting; you can stub refs nested deep inside child composite components.
+* Mock components are rendered with the new props (and children) of the mock component merged into the original props (and children) of the stubbed ref. This behaviour is demonstrated in the example above; `baz` will log `hello` and have the child `Baz`, whilst `boz` will log `foobar` and have the child `Bazza`.
+
+
 ## API
 
-### `testTree(<Component />)`
+### `testTree(<Component />, {options})`
 Creates the tree and returns the root node, with all `ref` and `refCollection` nodes made available as properties.
+
+*__Options__*
+* `stub`: see section on [stubs](#stubs)
+
+### `rootNode.dispose()`
+Safely unmount the tree. Will only unmount if component is already mounted. Can only be called on the root node of the tree.
 
 ### `node.state`
 Returns the state of your component.
@@ -97,9 +171,6 @@ Returns the specified prop from the node's element.
 
 ### `node.isMounted()`
 Returns true if the component/element is mounted, false if not.
-
-### `node.dispose()`
-Safely unmount the tree. Will only unmount if component is already mounted. Can only be called on the root node of the tree.
 
 ### `node.getDOMNode()`
 Returns the DOM node for the node.

@@ -173,17 +173,18 @@ function testTree(element, options) {
     wrapRender(element, options.stub);
   }
 
-  element = utils.renderIntoDocument(element);
+  var container = document.createElement("div");
+  element = React.render(element, container);
 
   var rootNode = new TestNode(element);
-  rootNode.dispose = dispose;
+  rootNode.dispose = dispose.bind(rootNode, container);
 
   return rootNode;
 }
 
-function dispose() {
+function dispose(container) {
   if (this.isMounted()) {
-    React.unmountComponentAtNode(this.getDOMNode().parentNode);
+    React.unmountComponentAtNode(container);
   }
 }
 
@@ -226,7 +227,7 @@ function stubRenderTree(renderTree, stubTree) {
     }
 
     if (utils.isElement(stub)) {
-      // Update ref of stub to that of the original node
+      // Merge old and new props onto stub
       var stubProps = _.extend({}, node._store.props, stub._store.props);
       stub._store.props = stubProps;
       stub._store.originalProps = stubProps;

@@ -5,6 +5,7 @@ var testTree = require("../lib/testTree");
 var BasicComponent = require("./fixtures/basicComponent.jsx");
 var StubbingComponent = require("./fixtures/stubbingComponent.jsx");
 var MockComponent = require("./fixtures/mockComponent.jsx");
+var NullComponent = require("./fixtures/nullComponent.jsx");
 var utils = React.addons.TestUtils;
 
 describe("testTree", function () {
@@ -12,16 +13,16 @@ describe("testTree", function () {
   describe("by default", function () {
     var tree;
     before(function () {
-      sinon.spy(utils, "renderIntoDocument");
+      sinon.spy(React, "render");
       tree = testTree(<BasicComponent />);
     });
     after(function () {
       tree.dispose();
-      utils.renderIntoDocument.restore();
+      React.render.restore();
     });
 
     it("should only render the top-level component", function () {
-      expect(utils.renderIntoDocument).to.have.been.calledOnce;
+      expect(React.render).to.have.been.calledOnce;
     });
 
     it("should only have dispose method on root node", function () {
@@ -36,9 +37,9 @@ describe("testTree", function () {
     beforeEach(function () {
       spy = sinon.spy(React, "unmountComponentAtNode");
       tree = testTree(<BasicComponent />);
+      tree.dispose();
     });
     afterEach(function () {
-      tree.dispose();
       spy.restore();
     });
 
@@ -46,6 +47,20 @@ describe("testTree", function () {
       tree.dispose();
       expect(tree.isMounted()).to.be.false;
       expect(spy).to.have.been.calledOnce;
+    });
+  });
+
+  describe("when tree of null component is disposed", function () {
+    var tree;
+    beforeEach(function () {
+      tree = testTree(<NullComponent />);
+    });
+
+    it("should unmount successfully", function () {
+      var fn = function () {
+        tree.dispose();
+      };
+      expect(fn).to.not.throw;
     });
   });
 

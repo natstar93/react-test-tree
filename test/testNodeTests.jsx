@@ -42,6 +42,10 @@ describe("TestNode", function () {
       expect(tree.baz.value).to.equal("Baz");
     });
 
+    it("should return the elements inner text if it does not have a value", function () {
+      expect(tree.bam.value).to.equal("Bam");
+    });
+
     it("should expose state", function () {
       expect(tree.state).to.deep.equal({
         foo: "bar"

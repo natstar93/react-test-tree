@@ -14,6 +14,9 @@ var BasicComponent = React.createClass({
           <li>2</li>
         </ul>
         <input ref="baz" defaultValue="Baz" />
+        <div ref="bam">
+          Bam
+        </div>
       </div>
     );
   }

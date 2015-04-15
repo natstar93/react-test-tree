@@ -178,6 +178,8 @@ Returns the DOM node for the node.
 ### `node.element`
 Reference to the original React element for the node.
 
+### `node.innerText`
+Returns the `innerText` of the element (or `textContent` if `innerText` not present).
 
 ## Contributing
 

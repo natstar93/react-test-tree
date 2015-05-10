@@ -27,6 +27,14 @@ function TestNode(element) {
     }
   });
 
+  Object.defineProperty(this, "innerText", {
+    get: function get() {
+      var node = this.getDOMNode();
+
+      return node.innerText || node.textContent;
+    }
+  });
+
   Object.defineProperty(this, "value", {
     get: function get() {
       return this.getDOMNode().value;
@@ -174,6 +182,9 @@ function testTree(element, options) {
   }
 
   var container = document.createElement("div");
+  if (options.mount) {
+    document.body.appendChild(container);
+  }
   element = React.render(element, container);
 
   var rootNode = new TestNode(element);
@@ -185,6 +196,9 @@ function testTree(element, options) {
 function dispose(container) {
   if (this.isMounted()) {
     React.unmountComponentAtNode(container);
+  }
+  if (container.parentElement) {
+    container.parentElement.removeChild(container);
   }
 }
 

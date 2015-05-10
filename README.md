@@ -144,6 +144,7 @@ Creates the tree and returns the root node, with all `ref` and `refCollection` n
 
 *__Options__*
 * `stub`: see section on [stubs](#stubs)
+* `mount`: if true, the tree's container will be mounted into the body rather than being rendered entirely in memory. Useful if you need to test various styling aspects.
 
 ### `rootNode.dispose()`
 Safely unmount the tree. Will only unmount if component is already mounted. Can only be called on the root node of the tree.

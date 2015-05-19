@@ -2,6 +2,14 @@
 
 [![Sauce Test Status](https://saucelabs.com/browser-matrix/oliverwoodings.svg)](https://saucelabs.com/u/oliverwoodings)
 
+## Install
+
+With [npm](http://npmjs.org) do:
+
+```npm install --save-dev react-test-tree```
+
+## Overview
+
 `react-test-tree` is a simple, scalable and concise way of testing React components. It is an evolution of the [react-page-objects](https://github.com/QubitProducts/react-page-objects) library.
 
 A test tree is dev-friendly representation of your entire React component tree, built by recursing through the refs of your elements.

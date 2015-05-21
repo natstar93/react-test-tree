@@ -6,6 +6,7 @@ var BasicComponent = require("./fixtures/basicComponent.jsx");
 var StubbingComponent = require("./fixtures/stubbingComponent.jsx");
 var MockComponent = require("./fixtures/mockComponent.jsx");
 var NullComponent = require("./fixtures/nullComponent.jsx");
+var ContextComponent = require("./fixtures/contextComponent.jsx");
 var utils = React.addons.TestUtils;
 
 describe("testTree", function () {
@@ -61,6 +62,24 @@ describe("testTree", function () {
         tree.dispose();
       };
       expect(fn).to.not.throw;
+    });
+  });
+
+  describe("when context is supplied", function () {
+    var tree, context;
+    before(function () {
+      context = {
+        foo: "Foos",
+        bar: 12345
+      };
+      tree = testTree(<ContextComponent />, { context: context });
+    });
+    after(function () {
+      tree.dispose();
+    });
+
+    it("should pass context context through to component", function () {
+      expect(tree.element.context).to.deep.equal(context);
     });
   });
 

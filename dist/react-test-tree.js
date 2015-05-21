@@ -49,7 +49,7 @@ function TestNode(element) {
     }
   });
 
-  var protectedProperties = _.keys(this);
+  var protectedProperties = Object.getOwnPropertyNames(this);
 
   updateRefs(this);
   updateRefCollections(this);
@@ -131,7 +131,7 @@ TestNode.prototype = {
     if (this.element.getInputDOMNode) {
       return this.element.getInputDOMNode();
     }
-    return this.element.getDOMNode();
+    return React.findDOMNode(this.element);
   },
 
   click: function click() {
@@ -185,12 +185,32 @@ function testTree(element, options) {
   if (options.mount) {
     document.body.appendChild(container);
   }
-  element = React.render(element, container);
+  var wrapper = React.render(makeWrapper(element, options.context), container);
 
-  var rootNode = new TestNode(element);
+  var rootNode = new TestNode(wrapper.refs.element);
   rootNode.dispose = dispose.bind(rootNode, container);
 
   return rootNode;
+}
+
+function makeWrapper(element, context) {
+  var Wrapper = React.createClass({
+    displayName: "Wrapper",
+
+    childContextTypes: _.mapValues(context, function () {
+      return React.PropTypes.any;
+    }),
+
+    getChildContext: function getChildContext() {
+      return context;
+    },
+
+    render: function render() {
+      return React.createElement(element.type, _.defaults({ ref: "element" }, element.props));
+    }
+  });
+
+  return React.createElement(Wrapper);
 }
 
 function dispose(container) {

@@ -51,6 +51,10 @@ describe("TestNode", function () {
         foo: "bar"
       });
     });
+
+    it("#isMounted() should return true", function () {
+      expect(tree.isMounted()).to.be.true;
+    });
   });
 
   describe("when unsafe ref names are supplied", function () {
@@ -115,9 +119,10 @@ describe("TestNode", function () {
   });
 
   describe("when child nodes unmount", function () {
-    var tree;
+    var tree, bar;
     before(function () {
       tree = testTree(<UnmountingComponent />);
+      bar = tree.bar;
       expect(tree.foo).to.have.length(2);
       expect(tree.bar).to.exist;
       expect(tree.baz).to.have.length(2);
@@ -125,6 +130,10 @@ describe("TestNode", function () {
     });
     after(function () {
       tree.dispose();
+    });
+
+    it("#isMounted() should return false", function () {
+      expect(bar.isMounted()).to.be.false;
     });
 
     it("should no longer map unmounted refs onto tree", function () {

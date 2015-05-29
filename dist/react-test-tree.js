@@ -151,7 +151,12 @@ TestNode.prototype = {
   },
 
   isMounted: function isMounted() {
-    return !!this.element.isMounted();
+    try {
+      React.findDOMNode(this.element);
+      return true;
+    } catch (e) {
+      return false;
+    }
   }
 
 };

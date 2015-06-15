@@ -13,35 +13,22 @@
   "keywords": [
     "react"
   ],
-  "licenses": [
-    {
-      "type": "MIT",
-      "url": "https://raw.github.com/QubitProducts/react-test-tree/master/LICENSE"
-    }
-  ],
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/QubitProducts/react-test-tree/issues"
   },
   "homepage": "https://github.com/QubitProducts/react-test-tree",
   "dependencies": {
-    "babelify": "^5.0.4",
     "lodash": "^3.6.0"
   },
   "peerDependencies": {
     "react": "^0.13.0"
   },
-  "browserify": {
-    "transform": [
-      "babelify"
-    ]
-  },
   "devDependencies": {
+    "babelify": "^5.0.4",
     "browserify": "^9.0.3",
     "chai": "^2.1.2",
-    "esprima-fb": "^13001.1001.0-dev-harmony-fb",
-    "js-yaml": "^3.2.7",
-    "jscs": "^1.12.0",
-    "jsxhint": "^0.13.2",
+    "js-yaml": "^3.3.1",
     "karma": "^0.12.31",
     "karma-browserify": "^4.0.0",
     "karma-chrome-launcher": "^0.1.7",
@@ -53,6 +40,7 @@
     "mocha": "^2.2.1",
     "mocha-spec-cov": "0.0.3",
     "react": "^0.13.1",
+    "semistandard": "^6.0.0",
     "sinon": "^1.14.1",
     "sinon-chai": "^2.7.0",
     "uglify-js": "^2.4.17"

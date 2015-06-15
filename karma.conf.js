@@ -1,28 +1,28 @@
-var fs = require("fs");
-var _ = require("lodash");
-var yaml = require("js-yaml");
+var fs = require('fs');
+var _ = require('lodash');
+var yaml = require('js-yaml');
 
-module.exports = function(config) {
-  process.env.NODE_ENV = "test";
+module.exports = function (config) {
+  process.env.NODE_ENV = 'test';
 
   switch (process.env.ENV) {
-    case "CI":
+    case 'CI':
       _.extend(process.env, saucelabsVariables());
       config.set(saucelabs());
       break;
-    case "IE":
+    case 'IE':
       _.extend(process.env, saucelabsVariables());
 
       config.set(_.extend(saucelabs(), {
         customLaunchers: {
           sl_ie_11: {
-            base: "SauceLabs",
-            browserName: "internet explorer",
-            platform: "Windows 8.1",
-            version: "11"
+            base: 'SauceLabs',
+            browserName: 'internet explorer',
+            platform: 'Windows 8.1',
+            version: '11'
           }
         },
-        browsers: ["sl_ie_11"]
+        browsers: ['sl_ie_11']
       }));
       break;
     default:
@@ -30,100 +30,100 @@ module.exports = function(config) {
       break;
   }
 
-  function saucelabs() {
+  function saucelabs () {
     var customLaunchers = {
       sl_chrome: {
-        base: "SauceLabs",
-        browserName: "chrome",
-        platform: "Windows 7",
-        version: "38"
+        base: 'SauceLabs',
+        browserName: 'chrome',
+        platform: 'Windows 7',
+        version: '38'
       },
       sl_firefox: {
-        base: "SauceLabs",
-        browserName: "firefox",
-        version: "33"
+        base: 'SauceLabs',
+        browserName: 'firefox',
+        version: '33'
       },
       sl_safari: {
-        base: "SauceLabs",
-        browserName: "safari",
-        version: "5"
+        base: 'SauceLabs',
+        browserName: 'safari',
+        version: '5'
       },
       sl_ie_9: {
-        base: "SauceLabs",
-        browserName: "internet explorer",
-        platform: "Windows 7",
-        version: "9"
+        base: 'SauceLabs',
+        browserName: 'internet explorer',
+        platform: 'Windows 7',
+        version: '9'
       },
       sl_ie_10: {
-        base: "SauceLabs",
-        browserName: "internet explorer",
-        platform: "Windows 7",
-        version: "10"
+        base: 'SauceLabs',
+        browserName: 'internet explorer',
+        platform: 'Windows 7',
+        version: '10'
       },
       sl_ie_11: {
-        base: "SauceLabs",
-        browserName: "internet explorer",
-        platform: "Windows 8.1",
-        version: "11"
+        base: 'SauceLabs',
+        browserName: 'internet explorer',
+        platform: 'Windows 8.1',
+        version: '11'
       }
     };
 
     return _.extend(base(), {
       sauceLabs: {
-        testName: "TestTree Tests"
+        testName: 'TestTree Tests'
       },
-      browserDisconnectTimeout : 10000,
-      browserDisconnectTolerance : 1,
-      browserNoActivityTimeout : 4 * 60 * 1000,
-      captureTimeout : 4 * 60 * 1000,
+      browserDisconnectTimeout: 10000,
+      browserDisconnectTolerance: 1,
+      browserNoActivityTimeout: 4 * 60 * 1000,
+      captureTimeout: 4 * 60 * 1000,
       customLaunchers: customLaunchers,
       browsers: Object.keys(customLaunchers),
-      reporters: ["dots", "saucelabs"],
+      reporters: ['dots', 'saucelabs'],
       singleRun: true
     });
 
   }
 
-  function local() {
+  function local () {
     return _.extend(base(), {
-      reporters: ["spec"],
-      browsers: ["Chrome"],
+      reporters: ['spec'],
+      browsers: ['Chrome'],
       autoWatch: true,
       singleRun: false,
       colors: true
     });
   }
 
-  function base() {
+  function base () {
     return {
-      basePath: "",
-      frameworks: ["mocha", "browserify"],
+      basePath: '',
+      frameworks: ['mocha', 'browserify'],
       browserify: {
         debug: true,
         bundleDelay: 1500,
-        transform: ["babelify"]
+        transform: ['babelify']
       },
       files: [
-        "index.js",
-        "lib/*.js*",
-        "test/**/*.js*"
+        'index.js',
+        'lib/*.js*',
+        'test/**/*.js*'
       ],
       preprocessors: {
-        "lib/*": ["browserify"],
-        "index.js": ["browserify"],
-        "test/**/*.js*": ["browserify"]
+        'lib/*': ['browserify'],
+        'index.js': ['browserify'],
+        'test/**/*.js*': ['browserify']
       },
       port: 9876,
       logLevel: config.LOG_INFO
     };
   }
 
-  function saucelabsVariables() {
-    return _.pick(travisGlobalVariables(), "SAUCE_USERNAME", "SAUCE_ACCESS_KEY");
+  function saucelabsVariables () {
+    return _.pick(travisGlobalVariables(), 'SAUCE_USERNAME', 'SAUCE_ACCESS_KEY');
 
-    function travisGlobalVariables() {
+    function travisGlobalVariables () {
       var config = {};
-      var travis = yaml.safeLoad(fs.readFileSync("./.travis.yml", "utf-8"));
+      var travis = yaml.safeLoad(fs.readFileSync('./.travis.yml', 'utf-8'));
 
       travis.env.global.forEach(function (variable) {
         var parts = /(.*)="(.*)"/.exec(variable);

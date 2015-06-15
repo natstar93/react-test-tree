@@ -1,4 +1,4 @@
-var React = require("react");
+var React = require('react');
 
 var UnmountingComponent = React.createClass({
 
@@ -17,13 +17,13 @@ var UnmountingComponent = React.createClass({
   render: function () {
     return (
       <div>
-        <ul refCollection="foo">
+        <ul refCollection='foo'>
           <li>1</li>
           {this.renderIfMounted(<li>2</li>)}
         </ul>
         {this.renderIfMounted(
-          <div ref="bar">
-            <ul refCollection="baz">
+          <div ref='bar'>
+            <ul refCollection='baz'>
               <li>1</li>
               <li>2</li>
             </ul>

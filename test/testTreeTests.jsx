@@ -1,20 +1,22 @@
-var React = require("react/addons");
-var expect = require("chai").expect;
-var sinon = require("sinon");
-var testTree = require("../lib/testTree");
-var BasicComponent = require("./fixtures/basicComponent.jsx");
-var StubbingComponent = require("./fixtures/stubbingComponent.jsx");
-var MockComponent = require("./fixtures/mockComponent.jsx");
-var NullComponent = require("./fixtures/nullComponent.jsx");
-var ContextComponent = require("./fixtures/contextComponent.jsx");
+/* global describe, it, before, after, beforeEach, afterEach */
+
+var React = require('react/addons');
+var expect = require('chai').expect;
+var sinon = require('sinon');
+var testTree = require('../lib/testTree');
+var BasicComponent = require('./fixtures/basicComponent.jsx');
+var StubbingComponent = require('./fixtures/stubbingComponent.jsx');
+var MockComponent = require('./fixtures/mockComponent.jsx');
+var NullComponent = require('./fixtures/nullComponent.jsx');
+var ContextComponent = require('./fixtures/contextComponent.jsx');
 var utils = React.addons.TestUtils;
 
-describe("testTree", function () {
+describe('testTree', function () {
 
-  describe("by default", function () {
+  describe('by default', function () {
     var tree;
     before(function () {
-      sinon.spy(React, "render");
+      sinon.spy(React, 'render');
       tree = testTree(<BasicComponent />);
     });
     after(function () {
@@ -22,21 +24,21 @@ describe("testTree", function () {
       React.render.restore();
     });
 
-    it("should only render the top-level component", function () {
+    it('should only render the top-level component', function () {
       expect(React.render).to.have.been.calledOnce;
     });
 
-    it("should only have dispose method on root node", function () {
-      expect(tree.dispose).to.be.a("function");
+    it('should only have dispose method on root node', function () {
+      expect(tree.dispose).to.be.a('function');
       expect(tree.foo.dispose).to.not.exist;
     });
 
   });
 
-  describe("when tree is disposed", function () {
+  describe('when tree is disposed', function () {
     var tree, spy;
     beforeEach(function () {
-      spy = sinon.spy(React, "unmountComponentAtNode");
+      spy = sinon.spy(React, 'unmountComponentAtNode');
       tree = testTree(<BasicComponent />);
       tree.dispose();
     });
@@ -44,20 +46,20 @@ describe("testTree", function () {
       spy.restore();
     });
 
-    it("should unmount component", function () {
+    it('should unmount component', function () {
       tree.dispose();
       expect(tree.isMounted()).to.be.false;
       expect(spy).to.have.been.calledOnce;
     });
   });
 
-  describe("when tree of null component is disposed", function () {
+  describe('when tree of null component is disposed', function () {
     var tree;
     beforeEach(function () {
       tree = testTree(<NullComponent />);
     });
 
-    it("should unmount successfully", function () {
+    it('should unmount successfully', function () {
       var fn = function () {
         tree.dispose();
       };
@@ -65,11 +67,11 @@ describe("testTree", function () {
     });
   });
 
-  describe("when context is supplied", function () {
+  describe('when context is supplied', function () {
     var tree, context;
     before(function () {
       context = {
-        foo: "Foos",
+        foo: 'Foos',
         bar: 12345
       };
       tree = testTree(<ContextComponent />, { context: context });
@@ -78,12 +80,12 @@ describe("testTree", function () {
       tree.dispose();
     });
 
-    it("should pass context context through to component", function () {
+    it('should pass context context through to component', function () {
       expect(tree.element.context).to.deep.equal(context);
     });
   });
 
-  describe("when stubbed", function () {
+  describe('when stubbed', function () {
     var tree;
     before(function () {
       var stubTree = {
@@ -100,31 +102,31 @@ describe("testTree", function () {
       tree.dispose();
     });
 
-    it("should not render anything when stub for ref is null", function () {
+    it('should not render anything when stub for ref is null', function () {
       expect(tree.nofoo).to.not.exist;
     });
 
-    it("should stub deeply nested refs", function () {
+    it('should stub deeply nested refs', function () {
       expect(tree.boz.fuz).to.exist;
       expect(tree.boz.buz).to.not.exist;
     });
 
-    it("should stub ref with stub element if provided", function () {
+    it('should stub ref with stub element if provided', function () {
       expect(utils.isCompositeComponentWithType(tree.foo.element, MockComponent));
       expect(utils.isCompositeComponentWithType(tree.baz.element, MockComponent));
     });
 
-    it("should copy props from original onto stub element", function () {
-      expect(tree.foo.getProp("bar")).to.equal("bar");
-      expect(tree.foo.key).to.equal("foo");
+    it('should copy props from original onto stub element', function () {
+      expect(tree.foo.getProp('bar')).to.equal('bar');
+      expect(tree.foo.key).to.equal('foo');
     });
 
-    it("should pass children to stub element", function () {
-      expect(tree.foo.getProp("children")).to.equal("Foo");
+    it('should pass children to stub element', function () {
+      expect(tree.foo.getProp('children')).to.equal('Foo');
     });
 
-    it("should use stub element's children if available", function () {
-      expect(tree.baz.getProp("children")).to.equal("Bazza");
+    it('should use stub element\'s children if available', function () {
+      expect(tree.baz.getProp('children')).to.equal('Bazza');
     });
 
   });

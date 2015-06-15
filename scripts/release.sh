@@ -1,17 +1,13 @@
+if [[ $(git symbolic-ref HEAD 2>/dev/null | cut -d"/" -f 3) != "master" ]]
+then
+  echo "Can only release from master";
+  exit 1;
+fi
+
 if [[ -n $(git status --porcelain) ]];
 then
   echo "Repo is dirty. please commit before releasing";
   exit 1;
-fi
-
-echo "rebuilding"
-make build
-
-if [[ -n $(git status --porcelain) ]];
-then
-  echo "commiting source"
-  git add -A
-  git commit -m "Rebuilt"
 fi
 
 if [ -z "$inc" ];

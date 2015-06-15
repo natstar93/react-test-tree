@@ -1,1 +1,1 @@
-module.exports = require("./lib/testTree");
+module.exports = require('./lib/testTree');

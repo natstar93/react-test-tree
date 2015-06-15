@@ -1,20 +1,20 @@
-var React = require("react");
+var React = require('react');
 
 var BasicComponent = React.createClass({
   getInitialState: function () {
     return {
-      foo: "bar"
+      foo: 'bar'
     };
   },
   render: function () {
     return (
-      <div {...this.props} ref="foo" className="Foo">
-        <ul refCollection="bar">
+      <div {...this.props} ref='foo' className='Foo'>
+        <ul refCollection='bar'>
           <li>1</li>
           <li>2</li>
         </ul>
-        <input ref="baz" defaultValue="Baz" />
-        <div ref="bam">
+        <input ref='baz' defaultValue='Baz' />
+        <div ref='bam'>
           Bam
         </div>
       </div>

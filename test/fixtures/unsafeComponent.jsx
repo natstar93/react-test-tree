@@ -1,8 +1,8 @@
-var React = require("react");
+var React = require('react');
 
 var UnsafeComponent = React.createClass({
   render: function () {
-    return <div ref="value" />;
+    return <div ref='value' />;
   }
 });
 

@@ -126,7 +126,7 @@ module.exports = function (config) {
       var travis = yaml.safeLoad(fs.readFileSync('./.travis.yml', 'utf-8'));
 
       travis.env.global.forEach(function (variable) {
-        var parts = /(.*)='(.*)'/.exec(variable);
+        var parts = /(.*)="(.*)"/.exec(variable);
 
         config[parts[1]] = parts[2];
       });

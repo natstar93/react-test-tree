@@ -60,11 +60,25 @@ describe('TestNode', function () {
   });
 
   describe('when unsafe ref names are supplied', function () {
-    it('should throw an error', function () {
-      var fn = function () {
-        testTree(<UnsafeComponent />);
+    var oldWarn, warned;
+    before(function () {
+      oldWarn = console.warn;
+      console.warn = function () {
+        var msg = [].join.call(arguments, ' ');
+        if (msg.indexOf('Attempted to overwrite protected TestNode method') > -1) {
+          warned = true;
+        } else {
+          oldWarn.apply(console, arguments);
+        }
       };
-      expect(fn).to.throw(/Attempted to overwrite protected/);
+    });
+    after(function () {
+      console.warn = oldWarn;
+    });
+
+    it('should warn', function () {
+      testTree(<UnsafeComponent />);
+      expect(warned).to.be.true;
     });
   });
 

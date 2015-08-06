@@ -209,7 +209,7 @@ describe('TestNode', function () {
     });
   });
 
-  describe.only('when a higher order component is found', function () {
+  describe('when a higher order component is found', function () {
     var tree;
     beforeEach(function () {
       tree = testTree(<HigherOrderComponent />);

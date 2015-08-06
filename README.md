@@ -167,6 +167,12 @@ Getter/setter for the element value. Should only be used if the component is a v
 ### `node.simulate`
 Instance of `React.addons.TestUtils.Simulate`, bound to the node. All its methods (beforeInput, blur, change, click, compositionEnd, compositionStart, compositionUpdate, contextMenu, copy, cut, doubleClick, drag, dragEnd, dragEnter, dragExit, dragLeave, dragOver, dragStart, drop, error, focus, input, keyDown, keyPress, keyUp, load, mouseDown, mouseEnter, mouseLeave, mouseMove, mouseOut, mouseOver, mouseUp, paste, reset, scroll, select, submit, touchCancel, touchEnd, touchMove, touchStart, wheel) can be called.
 
+For example, to simulate double-clicking a node called `myButton`, use:
+
+```javascript
+myButton.simulate.doubleClick();
+```
+
 ### `node.click()`
 Shorthand method for simulating a click on the node's element.
 

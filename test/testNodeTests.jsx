@@ -17,7 +17,7 @@ injectTapEventPlugin();
 
 describe('TestNode', function () {
 
-  describe.only('by default', function () {
+  describe('by default', function () {
     var tree;
     before(function () {
       tree = testTree(<BasicComponent />);

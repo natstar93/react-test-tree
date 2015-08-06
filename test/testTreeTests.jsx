@@ -85,7 +85,7 @@ describe('testTree', function () {
     });
   });
 
-  describe.only('when stubbed', function () {
+  describe('when stubbed', function () {
     var tree;
     before(function () {
       var stubTree = {

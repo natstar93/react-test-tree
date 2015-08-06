@@ -8,6 +8,7 @@ var TestNode = require('../lib/testNode');
 var BasicComponent = require('./fixtures/basicComponent.jsx');
 var NestedComponent = require('./fixtures/nestedComponent.jsx');
 var UnmountingComponent = require('./fixtures/unmountingComponent.jsx');
+var HigherOrderComponent = require('./fixtures/higherOrderComponent.jsx');
 var UnsafeComponent = require('./fixtures/unsafeComponent.jsx');
 var utils = React.addons.TestUtils;
 
@@ -205,6 +206,21 @@ describe('TestNode', function () {
       expect(tree.isMounted()).to.be.true;
       tree.dispose();
       expect(tree.isMounted()).to.be.false;
+    });
+  });
+
+  describe.only('when a higher order component is found', function () {
+    var tree;
+    beforeEach(function () {
+      tree = testTree(<HigherOrderComponent />);
+    });
+    afterEach(function () {
+      tree.dispose();
+    });
+
+    it('should skip the HOC and go direct to the inner component', function () {
+      expect(tree.innerComponent).to.not.exist;
+      expect(tree.innerSpan).to.exist;
     });
   });
 

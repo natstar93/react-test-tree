@@ -8,6 +8,8 @@ With [npm](http://npmjs.org) do:
 
 ```npm install --save-dev react-test-tree```
 
+_Note: This module requires a DOM. If you are not running tests in a browser, consider using_ [jsdom](https://github.com/tmpvar/jsdom)
+
 ## Overview
 
 `react-test-tree` is a simple, scalable and concise way of testing React components. It is an evolution of the [react-page-objects](https://github.com/QubitProducts/react-page-objects) library.

@@ -1,5 +1,15 @@
 var React = require('react');
 
+var DumbComponent = React.createClass({
+  propTypes: {
+    children: React.PropTypes.any
+  },
+
+  render: function () {
+    return <div>{this.props.children}</div>;
+  }
+});
+
 var BasicComponent = React.createClass({
   getInitialState: function () {
     return {
@@ -17,6 +27,11 @@ var BasicComponent = React.createClass({
         <div ref='bam'>
           Bam
         </div>
+        <DumbComponent refCollection='boz'>
+          <div />
+          <div />
+          <div />
+        </DumbComponent>
       </div>
     );
   }

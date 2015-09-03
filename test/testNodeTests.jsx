@@ -36,6 +36,11 @@ describe('TestNode', function () {
       expect(tree.bar[1]).to.be.an.instanceOf(TestNode);
     });
 
+    it('should allow refCollections on composite components', function () {
+      expect(tree.boz).to.be.an('array');
+      expect(tree.boz).to.have.length(3);
+    });
+
     it('should expose simulate library', function () {
       expect(tree.simulate.click).to.exist;
     });

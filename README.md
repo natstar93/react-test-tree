@@ -12,7 +12,7 @@ _Note: This module requires a DOM. If you are not running tests in a browser, co
 
 ### React 0.14
 There is an `rc` available with React 0.14 support:
-```npm install --save-dev react-test-tree@1.0.0-rc3```
+```npm install --save-dev react-test-tree@1.0.0-rc4```
 It contains breaking API changes, so please check out the README in the `react0.14` branch. This will be merged and released to `latest` at the beginning of November.
 
 

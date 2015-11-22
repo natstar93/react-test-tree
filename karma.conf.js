@@ -85,9 +85,14 @@ module.exports = function (config) {
       webpack: {
         devtool: 'inline-source-map',
         module: {
-          loaders: [
-            { test: /\.js$/, exclude: /node_modules/, loader: 'babel?presets[]=react' }
-          ]
+          loaders: [{
+            test: /\.js$/,
+            exclude: /node_modules/,
+            loader: 'babel',
+            query: {
+              presets: ['react', 'es2015']
+            }
+          }]
         }
       }
     }

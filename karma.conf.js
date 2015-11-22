@@ -1,29 +1,11 @@
-var fs = require('fs')
 var _ = require('lodash')
-var yaml = require('js-yaml')
 
 module.exports = function (config) {
   process.env.NODE_ENV = 'test'
 
   switch (process.env.ENV) {
     case 'CI':
-      _.extend(process.env, saucelabsVariables())
       config.set(saucelabs())
-      break
-    case 'IE':
-      _.extend(process.env, saucelabsVariables())
-
-      config.set(_.extend(saucelabs(), {
-        customLaunchers: {
-          sl_ie_11: {
-            base: 'SauceLabs',
-            browserName: 'internet explorer',
-            platform: 'Windows 8.1',
-            version: '11'
-          }
-        },
-        browsers: ['sl_ie_11']
-      }))
       break
     default:
       config.set(local())
@@ -77,7 +59,7 @@ module.exports = function (config) {
       browserNoActivityTimeout: 4 * 60 * 1000,
       captureTimeout: 4 * 60 * 1000,
       customLaunchers: customLaunchers,
-      browsers: Object.keys(customLaunchers),
+      browsers: _.keys(customLaunchers),
       reporters: ['dots', 'saucelabs'],
       singleRun: true
     })
@@ -96,41 +78,19 @@ module.exports = function (config) {
   function base () {
     return {
       basePath: '',
-      frameworks: ['browserify', 'source-map-support', 'mocha'],
-      browserify: {
-        debug: true,
-        bundleDelay: 1500,
-        transform: [['babelify', { presets: 'react' }]]
-      },
-      files: [
-        'index.js',
-        'lib/*.js*',
-        'test/**/*.js*'
-      ],
+      frameworks: ['mocha', 'sinon-chai'],
+      files: ['test/testIndex.js'],
       preprocessors: {
-        'lib/*': ['browserify'],
-        'index.js': ['browserify'],
-        'test/**/*.js*': ['browserify']
+        'test/testIndex.js': ['webpack', 'sourcemap']
       },
-      port: 9876,
-      logLevel: config.LOG_INFO
-    }
-  }
-
-  function saucelabsVariables () {
-    return _.pick(travisGlobalVariables(), 'SAUCE_USERNAME', 'SAUCE_ACCESS_KEY')
-
-    function travisGlobalVariables () {
-      var config = {}
-      var travis = yaml.safeLoad(fs.readFileSync('./.travis.yml', 'utf-8'))
-
-      travis.env.global.forEach(function (variable) {
-        var parts = /(.*)="(.*)"/.exec(variable)
-
-        config[parts[1]] = parts[2]
-      })
-
-      return config
+      webpack: {
+        devtool: 'inline-source-map',
+        module: {
+          loaders: [
+            { test: /\.js$/, exclude: /node_modules/, loader: 'babel?presets[]=react' }
+          ]
+        }
+      }
     }
   }
 }

@@ -1,11 +1,11 @@
 language: node_js
 node_js:
-  - "4.2"
+- '4.2'
 env:
   global:
-    - ENV="CI"
-    - SAUCE_USERNAME="oliverwoodings"
-    - SAUCE_ACCESS_KEY="47807610-3129-4a60-95d7-5e5b62ead383"
+  - ENV="CI"
+  - secure: TYWYTWKQeN69qQW05GyQKwwQCy6ld8tzsv48h0ADcffZCrNE85ATf8MEJIGbPx9FLTLMWehmdOwVJh9b98I0pH2Bv/Z+2P/n1e1WD+JaBQ8rCTWgWz5IvqH29hnoa0UckVtE+uHw97Czlcih8zadESjEp4ZUhZ8D5b+gf6xV/NA=
+  - secure: "iYajhP/t4MR3HLqAw2BVTNRbBdZhlm6QJ0J9ospQDWiucPmTr/HbTGm/BeOGCxc3Jlot2yJRgHV6z+MlxnL9Iz0+3MwaSECqpw6OPbri9UJFeQvzzLRLVoiVKlnxJifKNmAExToOCKgtwUWnkAzA/y3MIZj1LkGU06/y6C1vkb4="
 cache:
   directories:
-    - node_modules
+  - node_modules

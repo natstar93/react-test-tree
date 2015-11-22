@@ -1,17 +1,15 @@
-/* global describe, it, before, after, beforeEach, afterEach */
+/* global describe, it, before, after, beforeEach, afterEach, sinon, expect */
 
 var React = require('react')
 var _ = require('lodash')
 var ReactDOM = require('react-dom')
-var expect = require('chai').expect
-var sinon = require('sinon')
 var testTree = require('../lib/testTree')
-var BasicComponent = require('./fixtures/basicComponent.jsx')
-var StubbingComponent = require('./fixtures/stubbingComponent.jsx')
-var MockComponent = require('./fixtures/mockComponent.jsx')
-var NullComponent = require('./fixtures/nullComponent.jsx')
-var ContextComponent = require('./fixtures/contextComponent.jsx')
-var MountingComponent = require('./fixtures/mountingComponent.jsx')
+var BasicComponent = require('./fixtures/basicComponent')
+var StubbingComponent = require('./fixtures/stubbingComponent')
+var MockComponent = require('./fixtures/mockComponent')
+var NullComponent = require('./fixtures/nullComponent')
+var ContextComponent = require('./fixtures/contextComponent')
+var MountingComponent = require('./fixtures/mountingComponent')
 var utils = require('react/lib/ReactTestUtils')
 
 describe('testTree', function () {

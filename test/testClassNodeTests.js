@@ -1,15 +1,14 @@
-/* global describe, it, before, after, beforeEach, afterEach */
+/* global describe, it, before, after, beforeEach, afterEach, expect */
 
 var React = require('react')
-var expect = require('chai').expect
 var testTree = require('../lib/testTree')
 var TestNode = require('../lib/testNode')
 var TestClassNode = require('../lib/testClassNode')
-var BasicComponent = require('./fixtures/basicComponent.jsx')
-var NestedComponent = require('./fixtures/nestedComponent.jsx')
-var UnmountingComponent = require('./fixtures/unmountingComponent.jsx')
-var HigherOrderComponent = require('./fixtures/higherOrderComponent.jsx')
-var StatelessComponent = require('./fixtures/statelessComponent.jsx')
+var BasicComponent = require('./fixtures/basicComponent')
+var NestedComponent = require('./fixtures/nestedComponent')
+var UnmountingComponent = require('./fixtures/unmountingComponent')
+var HigherOrderComponent = require('./fixtures/higherOrderComponent')
+var StatelessComponent = require('./fixtures/statelessComponent')
 
 describe('TestClassNode', function () {
   describe('by default', function () {

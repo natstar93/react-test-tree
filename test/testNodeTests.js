@@ -1,11 +1,9 @@
-/* global describe, it, before, after, beforeEach, afterEach, HTMLInputElement */
+/* global describe, it, before, after, beforeEach, afterEach, HTMLInputElement, sinon, expect */
 
 var React = require('react')
-var expect = require('chai').expect
-var sinon = require('sinon')
 var injectTapEventPlugin = require('react-tap-event-plugin')
 var testTree = require('../lib/testTree')
-var BasicComponent = require('./fixtures/basicComponent.jsx')
+var BasicComponent = require('./fixtures/basicComponent')
 var utils = require('react/lib/ReactTestUtils')
 
 injectTapEventPlugin()

@@ -1,5 +1,5 @@
 var React = require('react')
-var HigherOrderComponent = require('./higherOrderComponent.jsx')
+var HigherOrderComponent = require('./higherOrderComponent')
 
 var StubbingComponent2 = React.createClass({
   render: function () {

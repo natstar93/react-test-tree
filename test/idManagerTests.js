@@ -1,12 +1,10 @@
-/* global describe, it, beforeEach, afterEach */
+/* global describe, it, beforeEach, afterEach, sinon, expect */
 
 var React = require('react')
 var ReactDOM = require('react-dom')
 var _ = require('lodash')
-var sinon = require('sinon')
-var expect = require('chai').expect
 var IDManager = require('../lib/IDManager')
-var IDComponent = require('./fixtures/IDComponent.jsx')
+var IDComponent = require('./fixtures/IDComponent')
 
 describe('IDManager', function () {
   var idManager

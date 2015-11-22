@@ -1,14 +1,13 @@
-/* global describe, it, before */
+/* global describe, it, before, expect */
 
 var React = require('react')
 var ReactDOM = require('react-dom')
-var expect = require('chai').expect
 var utils = require('../lib/utils')
-var NullComponent = require('./fixtures/NullComponent.jsx')
-var StatelessComponent = require('./fixtures/StatelessComponent.jsx')
-var BasicComponent = require('./fixtures/BasicComponent.jsx')
-var IDComponent = require('./fixtures/IDComponent.jsx')
-var InputComponent = require('./fixtures/InputComponent.jsx')
+var NullComponent = require('./fixtures/NullComponent')
+var StatelessComponent = require('./fixtures/StatelessComponent')
+var BasicComponent = require('./fixtures/BasicComponent')
+var IDComponent = require('./fixtures/IDComponent')
+var InputComponent = require('./fixtures/InputComponent')
 
 describe('utils', function () {
   describe('#getInstanceProperty()', function () {

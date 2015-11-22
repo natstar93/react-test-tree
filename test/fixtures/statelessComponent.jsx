@@ -1,4 +1,4 @@
-var React = require('react');
+var React = require('react')
 
 var StatelessComponent = (props) => (
   <div testRef='foo'>
@@ -8,6 +8,6 @@ var StatelessComponent = (props) => (
       <li />
     </ul>
   </div>
-);
+)
 
-module.exports = StatelessComponent;
+module.exports = StatelessComponent

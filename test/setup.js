@@ -1,5 +1,5 @@
-process.env.NODE_ENV = 'test';
+process.env.NODE_ENV = 'test'
 
-var chai = require('chai');
+var chai = require('chai')
 
-chai.use(require('sinon-chai'));
+chai.use(require('sinon-chai'))

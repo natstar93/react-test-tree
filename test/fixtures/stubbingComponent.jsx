@@ -1,5 +1,5 @@
-var React = require('react');
-var HigherOrderComponent = require('./higherOrderComponent.jsx');
+var React = require('react')
+var HigherOrderComponent = require('./higherOrderComponent.jsx')
 
 var StubbingComponent2 = React.createClass({
   render: function () {
@@ -7,9 +7,9 @@ var StubbingComponent2 = React.createClass({
       <div testRef='fuz'>
         <button testRef='buz'>Buz</button>
       </div>
-    );
+    )
   }
-});
+})
 
 var StubbingComponent = React.createClass({
   render: function () {
@@ -21,8 +21,8 @@ var StubbingComponent = React.createClass({
         <StubbingComponent2 testRef='boz' />
         <HigherOrderComponent testRef='hoc' />
       </div>
-    );
+    )
   }
-});
+})
 
-module.exports = StubbingComponent;
+module.exports = StubbingComponent

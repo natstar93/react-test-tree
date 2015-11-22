@@ -1,10 +1,10 @@
-var React = require('react');
+var React = require('react')
 
 var BasicComponent = React.createClass({
   getInitialState: function () {
     return {
       foo: 'bar'
-    };
+    }
   },
   render: function () {
     return (
@@ -18,8 +18,8 @@ var BasicComponent = React.createClass({
           Bam
         </div>
       </div>
-    );
+    )
   }
-});
+})
 
-module.exports = BasicComponent;
+module.exports = BasicComponent

@@ -1,17 +1,17 @@
-var React = require('react');
+var React = require('react')
 
 var UnmountingComponent = React.createClass({
 
   getInitialState: function () {
     return {
       mounted: true
-    };
+    }
   },
 
   setUnmounted: function () {
     this.setState({
       mounted: false
-    });
+    })
   },
 
   render: function () {
@@ -30,15 +30,15 @@ var UnmountingComponent = React.createClass({
           </div>
         )}
       </div>
-    );
+    )
   },
 
   renderIfMounted: function (children) {
     if (this.state.mounted) {
-      return children;
+      return children
     }
   }
 
-});
+})
 
-module.exports = UnmountingComponent;
+module.exports = UnmountingComponent

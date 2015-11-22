@@ -1,4 +1,4 @@
-var React = require('react');
+var React = require('react')
 
 var NestedComponent2 = React.createClass({
   render: function () {
@@ -9,9 +9,9 @@ var NestedComponent2 = React.createClass({
           <li>2</li>
         </ul>
       </div>
-    );
+    )
   }
-});
+})
 
 var NestedComponent = React.createClass({
   render: function () {
@@ -23,8 +23,8 @@ var NestedComponent = React.createClass({
         </ul>
         <NestedComponent2 testRef='nested' />
       </div>
-    );
+    )
   }
-});
+})
 
-module.exports = NestedComponent;
+module.exports = NestedComponent

@@ -1,17 +1,17 @@
-var fs = require('fs');
-var _ = require('lodash');
-var yaml = require('js-yaml');
+var fs = require('fs')
+var _ = require('lodash')
+var yaml = require('js-yaml')
 
 module.exports = function (config) {
-  process.env.NODE_ENV = 'test';
+  process.env.NODE_ENV = 'test'
 
   switch (process.env.ENV) {
     case 'CI':
-      _.extend(process.env, saucelabsVariables());
-      config.set(saucelabs());
-      break;
+      _.extend(process.env, saucelabsVariables())
+      config.set(saucelabs())
+      break
     case 'IE':
-      _.extend(process.env, saucelabsVariables());
+      _.extend(process.env, saucelabsVariables())
 
       config.set(_.extend(saucelabs(), {
         customLaunchers: {
@@ -23,11 +23,11 @@ module.exports = function (config) {
           }
         },
         browsers: ['sl_ie_11']
-      }));
-      break;
+      }))
+      break
     default:
-      config.set(local());
-      break;
+      config.set(local())
+      break
   }
 
   function saucelabs () {
@@ -66,7 +66,7 @@ module.exports = function (config) {
         platform: 'Windows 8.1',
         version: '11'
       }
-    };
+    }
 
     return _.extend(base(), {
       sauceLabs: {
@@ -80,7 +80,7 @@ module.exports = function (config) {
       browsers: Object.keys(customLaunchers),
       reporters: ['dots', 'saucelabs'],
       singleRun: true
-    });
+    })
   }
 
   function local () {
@@ -90,7 +90,7 @@ module.exports = function (config) {
       autoWatch: true,
       singleRun: false,
       colors: true
-    });
+    })
   }
 
   function base () {
@@ -100,7 +100,7 @@ module.exports = function (config) {
       browserify: {
         debug: true,
         bundleDelay: 1500,
-        transform: ['babelify']
+        transform: [['babelify', { presets: 'react' }]]
       },
       files: [
         'index.js',
@@ -114,23 +114,23 @@ module.exports = function (config) {
       },
       port: 9876,
       logLevel: config.LOG_INFO
-    };
+    }
   }
 
   function saucelabsVariables () {
-    return _.pick(travisGlobalVariables(), 'SAUCE_USERNAME', 'SAUCE_ACCESS_KEY');
+    return _.pick(travisGlobalVariables(), 'SAUCE_USERNAME', 'SAUCE_ACCESS_KEY')
 
     function travisGlobalVariables () {
-      var config = {};
-      var travis = yaml.safeLoad(fs.readFileSync('./.travis.yml', 'utf-8'));
+      var config = {}
+      var travis = yaml.safeLoad(fs.readFileSync('./.travis.yml', 'utf-8'))
 
       travis.env.global.forEach(function (variable) {
-        var parts = /(.*)="(.*)"/.exec(variable);
+        var parts = /(.*)="(.*)"/.exec(variable)
 
-        config[parts[1]] = parts[2];
-      });
+        config[parts[1]] = parts[2]
+      })
 
-      return config;
+      return config
     }
   }
-};
+}

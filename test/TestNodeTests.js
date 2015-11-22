@@ -3,7 +3,7 @@
 var React = require('react')
 var injectTapEventPlugin = require('react-tap-event-plugin')
 var testTree = require('../lib/testTree')
-var BasicComponent = require('./fixtures/basicComponent')
+var BasicComponent = require('./fixtures/BasicComponent')
 var utils = require('react/lib/ReactTestUtils')
 
 injectTapEventPlugin()

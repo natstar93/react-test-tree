@@ -2,13 +2,13 @@
 
 var React = require('react')
 var testTree = require('../lib/testTree')
-var TestNode = require('../lib/testNode')
-var TestClassNode = require('../lib/testClassNode')
-var BasicComponent = require('./fixtures/basicComponent')
-var NestedComponent = require('./fixtures/nestedComponent')
-var UnmountingComponent = require('./fixtures/unmountingComponent')
-var HigherOrderComponent = require('./fixtures/higherOrderComponent')
-var StatelessComponent = require('./fixtures/statelessComponent')
+var TestNode = require('../lib/TestNode')
+var TestClassNode = require('../lib/TestClassNode')
+var BasicComponent = require('./fixtures/BasicComponent')
+var NestedComponent = require('./fixtures/NestedComponent')
+var UnmountingComponent = require('./fixtures/UnmountingComponent')
+var HigherOrderComponent = require('./fixtures/HigherOrderComponent')
+var StatelessComponent = require('./fixtures/StatelessComponent')
 
 describe('TestClassNode', function () {
   describe('by default', function () {

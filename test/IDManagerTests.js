@@ -3,8 +3,8 @@
 var React = require('react')
 var ReactDOM = require('react-dom')
 var _ = require('lodash')
-var IDManager = require('../lib/idManager')
-var IDComponent = require('./fixtures/idComponent')
+var IDManager = require('../lib/IDManager')
+var IDComponent = require('./fixtures/IDComponent')
 
 describe('IDManager', function () {
   var idManager

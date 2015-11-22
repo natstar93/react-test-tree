@@ -77,7 +77,6 @@ module.exports = function (config) {
 
   function base () {
     return {
-      basePath: '',
       frameworks: ['mocha', 'sinon-chai'],
       files: ['test/testIndex.js'],
       preprocessors: {
@@ -91,7 +90,7 @@ module.exports = function (config) {
             exclude: /node_modules/,
             loader: 'babel',
             query: {
-              presets: ['react']
+              presets: ['react', 'es2015']
             }
           }]
         }

@@ -77,7 +77,6 @@ module.exports = function (config) {
 
   function base () {
     return {
-      basePath: '',
       frameworks: ['mocha', 'sinon-chai'],
       files: ['test/testIndex.js'],
       preprocessors: {

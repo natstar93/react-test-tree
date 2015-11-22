@@ -3,11 +3,11 @@
 var React = require('react')
 var ReactDOM = require('react-dom')
 var utils = require('../lib/utils')
-var NullComponent = require('./fixtures/NullComponent')
-var StatelessComponent = require('./fixtures/StatelessComponent')
-var BasicComponent = require('./fixtures/BasicComponent')
-var IDComponent = require('./fixtures/IDComponent')
-var InputComponent = require('./fixtures/InputComponent')
+var NullComponent = require('./fixtures/nullComponent')
+var StatelessComponent = require('./fixtures/statelessComponent')
+var BasicComponent = require('./fixtures/basicComponent')
+var IDComponent = require('./fixtures/idComponent')
+var InputComponent = require('./fixtures/inputComponent')
 
 describe('utils', function () {
   describe('#getInstanceProperty()', function () {

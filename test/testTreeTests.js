@@ -188,7 +188,7 @@ describe('testTree', function () {
   })
 
   describe('when elements are passed as children', function () {
-    var tree, realTree;
+    var tree, realTree
     before(function () {
       tree = testTree(<WrappingComponent />)
       realTree = ReactDOM.render(<WrappingComponent />, document.createElement('div'))

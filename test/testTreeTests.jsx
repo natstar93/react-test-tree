@@ -94,9 +94,6 @@ describe('testTree', function () {
         nofoo: null,
         boz: {
           buz: null
-        },
-        hoc: {
-          innerSpan: <MockComponent />
         }
       };
       tree = testTree(<StubbingComponent />, { stub: stubTree });
@@ -115,8 +112,8 @@ describe('testTree', function () {
     });
 
     it('should stub ref with stub element if provided', function () {
-      expect(utils.isCompositeComponentWithType(tree.foo.element, MockComponent)).to.be.true;
-      expect(utils.isCompositeComponentWithType(tree.baz.element, MockComponent)).to.be.true;
+      expect(utils.isCompositeComponentWithType(tree.foo.element, MockComponent));
+      expect(utils.isCompositeComponentWithType(tree.baz.element, MockComponent));
     });
 
     it('should copy props from original onto stub element', function () {
@@ -132,9 +129,6 @@ describe('testTree', function () {
       expect(tree.baz.getProp('children')).to.equal('Bazza');
     });
 
-    it('should ignore higher order components', function () {
-      expect(utils.isCompositeComponentWithType(tree.hoc.innerSpan.element, MockComponent)).to.be.true;
-    });
   });
 
 });

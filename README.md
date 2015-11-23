@@ -8,14 +8,6 @@ With [npm](http://npmjs.org) do:
 
 ```npm install --save-dev react-test-tree```
 
-_Note: This module requires a DOM. If you are not running tests in a browser, consider using_ [jsdom](https://github.com/tmpvar/jsdom)
-
-### React 0.14
-There is an `rc` available with React 0.14 support:
-```npm install --save-dev react-test-tree@1.0.0-rc7```
-It contains breaking API changes, so please check out the README in the `react0.14` branch. This will be merged and released to `latest` at the beginning of November.
-
-
 ## Overview
 
 `react-test-tree` is a simple, scalable and concise way of testing React components. It is an evolution of the [react-page-objects](https://github.com/QubitProducts/react-page-objects) library.
@@ -153,41 +145,6 @@ __Notes__:
 * Mock components are rendered with the new props (and children) of the mock component merged into the original props (and children) of the stubbed ref. This behaviour is demonstrated in the example above; `baz` will log `hello` and have the child `Baz`, whilst `boz` will log `foobar` and have the child `Bazza`.
 
 
-## Higher Order Components
-The HOC pattern is rapidly becoming the most popular successor to mixins (and the [problems associated with them](https://medium.com/@dan_abramov/mixins-are-dead-long-live-higher-order-components-94a0d2f9e750)). Unfortunately every HOC adds another layer into the component tree, making your testing ref chains longer and less explicit. `react-test-tree` can help alleviate this pain by skipping any component that has the `innerComponentRef` property available on its constructor. Here is an example:
-
-```jsx
-var InnerComponent = React.createClass({
-  render: function () {
-    return (
-      <div>
-        <button ref="span" />
-      </div>
-    )
-  }
-});
-
-function withHOC(Component) {
-  return React.createClass({
-    render: function () {
-      return <Component ref="innerComponent" />;
-    }
-  });
-}
-
-var MyComponent = withHOC(InnerComponent);
-
-// Without specifying `innerComponentRef` we have to deal with the HOC in the ref tree
-var annoyingTree = testTree(<MyComponent />);
-annoyingTree.innerComponent.button.click();
-
-// Adding `innerComponentRef` causes react-test-tree to ignore the HOC, keeping the API nice and clean
-MyComponent.innerComponentRef = "innerComponent";
-var niceTree = testTree(<MyComponent />);
-niceTree.button.click();
-```
-
-
 ## API
 
 ### `testTree(<Component />, {options})`
@@ -208,13 +165,7 @@ Returns the state of your component.
 Getter/setter for the element value. Should only be used if the component is a valid HTML element that accepts the value attribute.
 
 ### `node.simulate`
-Instance of `React.addons.TestUtils.Simulate`, bound to the node. All its methods (beforeInput, blur, change, click, compositionEnd, compositionStart, compositionUpdate, contextMenu, copy, cut, doubleClick, drag, dragEnd, dragEnter, dragExit, dragLeave, dragOver, dragStart, drop, error, focus, input, keyDown, keyPress, keyUp, load, mouseDown, mouseEnter, mouseLeave, mouseMove, mouseOut, mouseOver, mouseUp, paste, reset, scroll, select, submit, touchCancel, touchEnd, touchMove, touchStart, wheel) can be called.
-
-For example, to simulate double-clicking a node called `myButton`, use:
-
-```javascript
-myButton.simulate.doubleClick();
-```
+Instance of `React.addons.TestUtils.Simulate`, bound to the node.
 
 ### `node.click()`
 Shorthand method for simulating a click on the node's element.

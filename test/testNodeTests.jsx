@@ -3,17 +3,13 @@
 var React = require('react/addons');
 var expect = require('chai').expect;
 var sinon = require('sinon');
-var injectTapEventPlugin = require('react-tap-event-plugin');
 var testTree = require('../lib/testTree');
 var TestNode = require('../lib/testNode');
 var BasicComponent = require('./fixtures/basicComponent.jsx');
 var NestedComponent = require('./fixtures/nestedComponent.jsx');
 var UnmountingComponent = require('./fixtures/unmountingComponent.jsx');
-var HigherOrderComponent = require('./fixtures/higherOrderComponent.jsx');
 var UnsafeComponent = require('./fixtures/unsafeComponent.jsx');
 var utils = React.addons.TestUtils;
-
-injectTapEventPlugin();
 
 describe('TestNode', function () {
 
@@ -36,17 +32,8 @@ describe('TestNode', function () {
       expect(tree.bar[1]).to.be.an.instanceOf(TestNode);
     });
 
-    it('should allow refCollections on composite components', function () {
-      expect(tree.boz).to.be.an('array');
-      expect(tree.boz).to.have.length(3);
-    });
-
     it('should expose simulate library', function () {
       expect(tree.simulate.click).to.exist;
-    });
-
-    it('should include simulate library addons', function () {
-      expect(tree.simulate.touchTap).to.exist;
     });
 
     it('should expose element', function () {
@@ -73,25 +60,11 @@ describe('TestNode', function () {
   });
 
   describe('when unsafe ref names are supplied', function () {
-    var oldWarn, warned;
-    before(function () {
-      oldWarn = console.warn;
-      console.warn = function () {
-        var msg = [].join.call(arguments, ' ');
-        if (msg.indexOf('Attempted to overwrite protected TestNode method') > -1) {
-          warned = true;
-        } else {
-          oldWarn.apply(console, arguments);
-        }
+    it('should throw an error', function () {
+      var fn = function () {
+        testTree(<UnsafeComponent />);
       };
-    });
-    after(function () {
-      console.warn = oldWarn;
-    });
-
-    it('should warn', function () {
-      testTree(<UnsafeComponent />);
-      expect(warned).to.be.true;
+      expect(fn).to.throw(/Attempted to overwrite protected/);
     });
   });
 
@@ -218,21 +191,6 @@ describe('TestNode', function () {
       expect(tree.isMounted()).to.be.true;
       tree.dispose();
       expect(tree.isMounted()).to.be.false;
-    });
-  });
-
-  describe('when a higher order component is found', function () {
-    var tree;
-    beforeEach(function () {
-      tree = testTree(<HigherOrderComponent />);
-    });
-    afterEach(function () {
-      tree.dispose();
-    });
-
-    it('should skip the HOC and go direct to the inner component', function () {
-      expect(tree.innerComponent).to.not.exist;
-      expect(tree.innerSpan).to.exist;
     });
   });
 

@@ -1,4 +1,5 @@
-# react-test-tree [![Build Status](https://travis-ci.org/QubitProducts/react-test-tree.svg)](https://travis-ci.org/QubitProducts/react-test-tree) [![js-semistandard-style](https://img.shields.io/badge/code%20style-semistandard-brightgreen.svg?style=flat-square)](https://github.com/Flet/semistandard)
+# react-test-tree [![Build Status](https://travis-ci.org/QubitProducts/react-test-tree.svg)](https://travis-ci.org/QubitProducts/react-test-tree) [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat)](http://standardjs.com/)
+
 
 [![Sauce Test Status](https://saucelabs.com/browser-matrix/oliverwoodings.svg)](https://saucelabs.com/u/oliverwoodings)
 
@@ -12,7 +13,7 @@ With [npm](http://npmjs.org) do:
 
 `react-test-tree` is a simple, scalable and concise way of testing React components. It is an evolution of the [react-page-objects](https://github.com/QubitProducts/react-page-objects) library.
 
-A test tree is dev-friendly representation of your entire React component tree, built by recursing through the refs of your elements.
+A test tree is dev-friendly representation of your entire React component tree, built by recursing through special props applied to your components.
 
 React gives us some great utilities for testing React components, however they lead to overly-verbose boilerplate that clutters your tests. `react-test-tree` tidies this clutter away, allowing you to manipulate your components with short, concise statements:
 
@@ -21,7 +22,7 @@ var BozComponent = React.createClass({
   render: function () {
     return (
       <div>
-        <button ref="biz">Biz</button>
+        <button testRef="biz">Biz</button>
       </div>
     );
   }
@@ -37,13 +38,13 @@ var FooComponent = React.createClass({
   render: function () {
     return (
       <div>
-        <button ref="bar">Bar</button>
-        <select refCollection="baz">
+        <button testRef="bar">Bar</button>
+        <select testRefCollection="baz">
           <option>blue</option>
           <option>gold</option>
         </select>
-        <BozComponent ref="boz" />
-        <FuzComponent ref="fuz" />
+        <BozComponent testRef="boz" />
+        <FuzComponent testRef="fuz" />
       </div>
     );
   }
@@ -54,24 +55,26 @@ var fooTree = testTree(<FooComponent />, {
     fuz: null
   }
 });
-fooTree.bar.click(); // simulates a click
-fooTree.boz.biz.click(); // simulates a click
-fooTree.baz.length === 2; // collection of nodes
-fooTree.fuz === null; // null due to being stubbed out
+fooTree.get("bar").click(); // simulates a click
+fooTree.getIn(["boz", "biz"]).click(); // simulates a click on a deep node
+fooTree.get("baz").length === 2; // collection of nodes
+fooTree.get("fuz") === null; // null due to being stubbed out
 ```
 
-In the above example, `react-test-tree` has recursively built a tree with all refs and refCollections represented as nodes of the tree. Any refs that appear in the `stub` tree config get replaced.
+In the above example `react-test-tree` has recursively built a tree out of the `testRef` and `testRefCollection` props, represented as nodes of the tree, which can be retrieved using `get()` or `getIn()`. Any names that appear in the `stub` tree config get replaced or removed.
 
 
-## refs and refCollections
+## testRef and testRefCollection
 
-You should be familiar with the `ref` prop in React. They are used when you need to reference an element in your render function. Unfortunately react does not give us an easy way to reference a collection of `ref`s as a whole. `react-test-tree` makes this possible by use of the `refCollection` prop. Declaring `refCollection` on a component will make all it's direct children available on the corresonding tree node as an array:
+You should be familiar with the `ref` prop in React. They are used when you need to reference an element in your render function. You can look at the `testRef` prop like a `ref`, but purely for testing. It is necessary to distinguish between the two because of their applications; the React team is making it increasingly clear that `ref`s should only be used for very specific purposes, which don't primarily include testing.
+
+As well as the basic `testRef` prop, `react-test-tree` makes it possible to retrieve the children of an element by use of `refCollection`. Declaring `testRefCollection` on a component will make all it's direct children available on the corresonding tree node as an array:
 
 ```jsx
 var BarComponent = React.createClass({
   render: function () {
     return (
-      <select ref="foo" refCollection="bar">
+      <select testRef="foo" testRefCollection="bar">
         <option value="blue">Blue</option>
         <option value="gold">Gold</option>
       </select>;
@@ -80,18 +83,27 @@ var BarComponent = React.createClass({
 });
 
 var barTree = testTree(<BarComponent />);
-barTree.bar.length === 2;
-barTree.bar[0].getAttribute("value") === "blue";
+barTree.get("bar").length === 2;
+barTree.get("bar")[0].getAttribute("value") === "blue";
 ```
 
 __Notes__:
-* You can still apply a `ref` as well as a `refCollection` if you want to be able to manipulate the parent element too.
-* Your `ref`s and `refCollection`s must not have the same name as any of the public properties of a test node, otherwise they will overwrite them. An error will be thrown if you attempt to do this.
+* You can still apply a `testRef` as well as a `testRefCollection` if you want to be able to manipulate the parent element too.
+* `testRef`s and `testRefCollection`s may not have the same name.
+* Updates to the render tree will not be reflected in the test tree until the next tick. You should defer accessing the tree after causing any updates:
+
+```jsx
+var tree = testTree(<MyComponent />);
+tree.get('button').click();
+defer(function () {
+  expect(tree.state.clicked).to.be.true; // passes
+});
+```
 
 
 ## Stubs
 
-It is inevitable that at some point when testing React components you will want to avoid rendering part of a component. Perhaps it might trigger some sideways data loading, or maybe you want to replace it with a mock. `react-test-tree` allows you to quickly and easily stub out any refs in the tree with either `null` or a replacement component:
+It is inevitable that at some point when testing React components you will want to avoid rendering part of a component. Perhaps it might trigger some sideways data loading, or maybe you want to replace it with a mock. `react-test-tree` allows you to quickly and easily stub out any testRefs in the tree with either `null` or a replacement component:
 
 ```jsx
 var MockComponent = React.createClass({
@@ -105,7 +117,7 @@ var BizComponent = React.createClass({
   render: function () {
     return (
       <div>
-        <button ref="fuz">Fuz</button>
+        <button testRef="fuz">Fuz</button>
       </div>
     );
   }
@@ -115,9 +127,9 @@ var FooComponent = React.createClass({
   render: function () {
     return (
       <div>
-        <div ref="bar" />
-        <div ref="baz" aProp="hello">Baz</div>
-        <div ref="boz" aProp="hello">Boz</div>
+        <div testRef="bar" />
+        <div testRef="baz" aProp="hello">Baz</div>
+        <div testRef="boz" aProp="hello">Boz</div>
       </div>
     );
   }
@@ -133,27 +145,53 @@ var fooTree = testTree(<FooComponent />, {
     }
   }
 });
-fooTree.bar; // -> null
-fooTree.biz.fuz; // -> null
-fooTree.baz; // -> replaced with `MockComponent` and renders `Baz` string as child
-fooTree.boz; // -> replaced with `MockComponent` and renders `Bazza` string as child
+fooTree.get("bar"); // -> null
+fooTree.getIn(["biz", "fuz"]); // -> null
+fooTree.get("baz"); // -> replaced with `MockComponent` and renders `Baz` string as child
+fooTree.get("boz"); // -> replaced with `MockComponent` and renders `Bazza` string as child
 ```
 
 __Notes__:
 * You can use any falsy stub value other than `undefined` to completely remove a component (e.g. `null`, `false`).
-* The stub object supports nesting; you can stub refs nested deep inside child composite components.
-* Mock components are rendered with the new props (and children) of the mock component merged into the original props (and children) of the stubbed ref. This behaviour is demonstrated in the example above; `baz` will log `hello` and have the child `Baz`, whilst `boz` will log `foobar` and have the child `Bazza`.
+* The stub object supports nesting; you can stub testRefs nested deep inside child composite components.
+* Mock components are rendered with the new props (and children) of the mock component merged into the original props (and children) of the stubbed testRef. This behaviour is demonstrated in the example above; `baz` will log `hello` and have the child `Baz`, whilst `boz` will log `foobar` and have the child `Bazza`.
 
 
 ## API
 
 ### `testTree(<Component />, {options})`
-Creates the tree and returns the root node, with all `ref` and `refCollection` nodes made available as properties.
+Creates the tree and returns the root node.
 
 *__Options__*
 * `stub`: see section on [stubs](#stubs)
 * `mount`: if true, the tree's container will be mounted into the body rather than being rendered entirely in memory. Useful if you need to test various styling aspects.
 * `context`: use this option to pass through the context object required for your component. test-tree will automatically wrap your component and pass through the context.
+* `wrap`: if true, the tree will be wrapped in an outer component. This is useful if you want to pass elements with testRefs directly into test-tree without them being contained in a component, e.g.:
+```jsx
+var tree = testTree(
+  <ul testRefCollection="foo">
+    <li testRef="bar" />
+    <li />
+  </ul>
+, { wrap: true });
+tree.foo; // exists
+```
+
+### `node.get(refName)`
+Returns the node for the specified `testRef` or `testRefCollection` name.
+
+### `node.getIn([refName])`
+Same as `node.get(refName)` except it allows you to cleanly retrieve a node from deep down the testRef tree. For example, instead of:
+
+```jsx
+tree.get("foo").get("bar").get("baz").click();
+```
+
+you could write:
+
+```jsx
+tree.getIn(["foo", "bar", "baz"]).click();
+```
 
 ### `rootNode.dispose()`
 Safely unmount the tree. Will only unmount if component is already mounted. Can only be called on the root node of the tree.
@@ -165,7 +203,13 @@ Returns the state of your component.
 Getter/setter for the element value. Should only be used if the component is a valid HTML element that accepts the value attribute.
 
 ### `node.simulate`
-Instance of `React.addons.TestUtils.Simulate`, bound to the node.
+Instance of `React.addons.TestUtils.Simulate`, bound to the node. All its methods (beforeInput, blur, change, click, compositionEnd, compositionStart, compositionUpdate, contextMenu, copy, cut, doubleClick, drag, dragEnd, dragEnter, dragExit, dragLeave, dragOver, dragStart, drop, error, focus, input, keyDown, keyPress, keyUp, load, mouseDown, mouseEnter, mouseLeave, mouseMove, mouseOut, mouseOver, mouseUp, paste, reset, scroll, select, submit, touchCancel, touchEnd, touchMove, touchStart, wheel) can be called.
+
+For example, to simulate double-clicking a node called `myButton`, use:
+
+```javascript
+myButton.simulate.doubleClick();
+```
 
 ### `node.click()`
 Shorthand method for simulating a click on the node's element.
@@ -191,6 +235,73 @@ Reference to the original React element for the node.
 ### `node.innerText`
 Returns the `innerText` of the element (or `textContent` if `innerText` not present).
 
+
+## Updating to v1.0.0
+React 0.14 introduced stateless function components. This new type of component cannot contain refs and also cannot have refs applied to them. The React team is trying to encourage refs to only be used for very specific purposes, which doesn't primarily include testing. We have taken the decision with `react-test-tree` to support the React team in their decision to separate the usage of refs from testing by switching to using the `testRef` and `testRefCollection` props instead of `ref` and `testRef`. Here is an example of a component pre-v1.0.0 and after:
+
+```jsx
+// Pre-v1.0.0
+var MyComponent = React.createClass({
+  render: function () {
+    return (
+      <div ref='foo' refCollection='bar' />
+    );
+  }
+});
+
+// v1.0.0
+var MyComponent = React.createClass({
+  render: function () {
+    return (
+      <div testRef='foo' testRefCollection='bar' />
+    );
+  }
+});
+```
+
+Pre-v1.0.0, refs and refCollections were accessible as direct properties of the node. This led to issues with collisions between ref names and react-test-tree's node methods. In v1.0.0 the API has been changed to solve this problem. Node are now accessed using the `node.get()` and `node.getIn()` methods:
+
+```jsx
+// Pre-v1.0.0
+tree.foo.bar.click();
+
+// v1.0.0
+tree.get("foo").get("bar").click();
+// or
+tree.getIn(["foo", "bar"]).click();
+```
+
+Post-v1.0.0 have a new option, `wrap` that you'll need to pass if you need a `testRef` or `testRefCollection` on the component that you're passing into `react-test-tree`.
+
+```jsx
+// Pre-v1.0.0
+var tree = testTree(
+  <ul refCollection="foo">
+    <li ref="bar" />
+    <li />
+  </ul>);
+
+tree.foo; // exists
+
+// v1.0.0
+var tree = testTree(
+  <ul testRefCollection="foo">
+    <li testRef="bar" />
+    <li />
+  </ul>
+, { wrap: true });
+
+tree.foo; // exists
+```
+
+
+## React versions
+The master branch currently supports React 0.14 and is not backwards compatible. 
+
+* __React 0.14:__ `react-test-tree@latest`
+* __React 0.13/0.12:__ `react-test-tree@^0.3.1`
+
+
 ## Contributing
 
 * `make bootstrap` - install dependencies
@@ -199,28 +310,3 @@ Returns the `innerText` of the element (or `textContent` if `innerText` not pres
 * `make lint` - lint the project
 * `make test-watch` - run karma with the watch option
 * `make release` - increment and publish to npm
-
-
-## Git Commit Messages
-
-* Use the present tense ("Add feature" not "Added feature")
-* Use the imperative mood ("Move cursor to..." not "Moves cursor to...")
-* Limit the first line to 72 characters or less
-* Reference issues and pull requests liberally
-* Consider starting the commit message with an applicable emoji:
-    * :lipstick: `:lipstick:` when improving the format/structure of the code
-    * :racehorse: `:racehorse:` when improving performance
-    * :non-potable_water: `:non-potable_water:` when plugging memory leaks
-    * :memo: `:memo:` when writing docs
-    * :penguin: `:penguin:` when fixing something on Linux
-    * :apple: `:apple:` when fixing something on Mac OS
-    * :checkered_flag: `:checkered_flag:` when fixing something on Windows
-    * :bug: `:bug:` when fixing a bug
-    * :fire: `:fire:` when removing code or files
-    * :green_heart: `:green_heart:` when fixing the CI build
-    * :white_check_mark: `:white_check_mark:` when adding tests
-    * :lock: `:lock:` when dealing with security
-    * :arrow_up: `:arrow_up:` when upgrading dependencies
-    * :arrow_down: `:arrow_down:` when downgrading dependencies
-
-(From [atom](https://atom.io/docs/latest/contributing#git-commit-messages))

@@ -1,4 +1,4 @@
-var React = require('react');
+var React = require('react')
 
 var ContextComponent = React.createClass({
   contextTypes: {
@@ -6,8 +6,8 @@ var ContextComponent = React.createClass({
     bar: React.PropTypes.number
   },
   render: function () {
-    return null;
+    return null
   }
-});
+})
 
-module.exports = ContextComponent;
+module.exports = ContextComponent

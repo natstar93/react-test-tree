@@ -11,7 +11,7 @@ test-watch: lint
 	@$(BIN)/karma start
 
 lint: bootstrap
-	@$(BIN)/semistandard
+	@$(BIN)/standard
 
 release: test
 	@inc=$(inc) sh scripts/release.sh

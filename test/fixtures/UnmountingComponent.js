@@ -1,44 +1,44 @@
-var React = require('react');
+var React = require('react')
 
 var UnmountingComponent = React.createClass({
 
   getInitialState: function () {
     return {
       mounted: true
-    };
+    }
   },
 
   setUnmounted: function () {
     this.setState({
       mounted: false
-    });
+    })
   },
 
   render: function () {
     return (
       <div>
-        <ul refCollection='foo'>
+        <ul testRefCollection='foo'>
           <li>1</li>
           {this.renderIfMounted(<li>2</li>)}
         </ul>
         {this.renderIfMounted(
-          <div ref='bar'>
-            <ul refCollection='baz'>
+          <div testRef='bar'>
+            <ul testRefCollection='baz'>
               <li>1</li>
               <li>2</li>
             </ul>
           </div>
         )}
       </div>
-    );
+    )
   },
 
   renderIfMounted: function (children) {
     if (this.state.mounted) {
-      return children;
+      return children
     }
   }
 
-});
+})
 
-module.exports = UnmountingComponent;
+module.exports = UnmountingComponent

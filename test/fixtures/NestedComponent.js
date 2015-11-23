@@ -16,12 +16,12 @@ var NestedComponent2 = React.createClass({
 var NestedComponent = React.createClass({
   render: function () {
     return (
-      <div testRef='ref1'>
+      <div testRef='ref1' ref='foo' key='foo'>
         <ul testRefCollection='refCollection1'>
           <li>1</li>
           <li>2</li>
         </ul>
-        <NestedComponent2 testRef='nested' />
+        <NestedComponent2 testRef='nested' ref='bar' key='bar' />
       </div>
     )
   }

@@ -10,6 +10,7 @@ var MockComponent = require('./fixtures/MockComponent')
 var NullComponent = require('./fixtures/NullComponent')
 var ContextComponent = require('./fixtures/ContextComponent')
 var MountingComponent = require('./fixtures/MountingComponent')
+var WrappingComponent = require('./fixtures/WrappingComponent')
 var utils = require('react/lib/ReactTestUtils')
 
 describe('testTree', function () {
@@ -183,6 +184,19 @@ describe('testTree', function () {
 
     it('should ignore higher order components', function () {
       expect(utils.isCompositeComponentWithType(tree.getIn(['hoc', 'innerSpan']).element, MockComponent)).to.be.true
+    })
+  })
+
+  describe('when elements are passed as children', function () {
+    var tree, realTree;
+    before(function () {
+      tree = testTree(<WrappingComponent />)
+      realTree = ReactDOM.render(<WrappingComponent />, document.createElement('div'))
+    })
+
+    it('should preserve ref access', function () {
+      expect(realTree.refs.foo, 'refs.foo').to.exist
+      expect(tree.element.refs.foo, 'element.refs.foo').to.exist
     })
   })
 })

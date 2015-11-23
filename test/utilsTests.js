@@ -4,6 +4,7 @@ var React = require('react')
 var ReactDOM = require('react-dom')
 var utils = require('../lib/utils')
 var NullComponent = require('./fixtures/NullComponent')
+var NestedComponent = require('./fixtures/NestedComponent')
 var StatelessComponent = require('./fixtures/StatelessComponent')
 var BasicComponent = require('./fixtures/BasicComponent')
 var IDComponent = require('./fixtures/IDComponent')
@@ -11,26 +12,22 @@ var InputComponent = require('./fixtures/InputComponent')
 
 describe('utils', function () {
   describe('#getInstanceProperty()', function () {
-    var tree, renderedTree
+    var renderedTree
     before(function () {
-      tree = (
-        <div foo='bar'>
-          <NullComponent baz='boz' />
-        </div>
-      )
-      renderedTree = ReactDOM.render(tree, document.createElement('div'))
+      renderedTree = ReactDOM.render(<NestedComponent />, document.createElement('div'))
     })
 
     it('should work for instances', function () {
-      expect(utils.getInstanceProperty(tree, 'props').foo).to.equal('bar')
+      var tree = <div key='bar' />
+      expect(utils.getInstanceProperty(tree, 'key')).to.equal('bar')
     })
 
     it('should work for components', function () {
-      expect(utils.getInstanceProperty(renderedTree.props.children, 'props').baz).to.equal('boz')
+      expect(utils.getInstanceProperty(renderedTree.refs.bar, 'key')).to.equal('bar')
     })
 
     it('should work for elements', function () {
-      expect(utils.getInstanceProperty(renderedTree, 'props').foo).to.equal('bar')
+      expect(utils.getInstanceProperty(renderedTree.refs.foo, 'key')).to.equal('foo')
     })
   })
 

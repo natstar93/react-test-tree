@@ -16,7 +16,7 @@ var StubbingComponent = React.createClass({
     return (
       <div>
         <div testRef='nofoo' />
-        <div testRef='foo' key='foo' bar='bar'>Foo</div>
+        <div testRef='foo' key='foo' ref='foo' bar='bar'>Foo</div>
         <div testRef='baz'>Baz</div>
         <StubbingComponent2 testRef='boz' />
         <HigherOrderComponent testRef='hoc' />

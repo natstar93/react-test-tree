@@ -39,6 +39,18 @@ describe('testTree', function () {
       expect(tree.get('boz').element.props).to.not.haveOwnProperty('testRefCollection')
     })
 
+    it('should preserve props', function () {
+      expect(tree.get('foo').getProp('className')).to.equal('Foo')
+    })
+
+    it('should preserve refs', function () {
+      expect(tree.get('baz').element.ref).to.equal('baz')
+    })
+
+    it('should preserve keys', function () {
+      expect(tree.get('bar1').key).to.equal('bar1key')
+    })
+
     it('should retain type of children', function () {
       expect(tree.get('foo').getProp('children')).to.be.instanceOf(Array)
       expect(tree.get('bam').getProp('children')).to.be.a('string')
@@ -171,7 +183,14 @@ describe('testTree', function () {
 
     it('should copy props from original onto stub element', function () {
       expect(tree.get('foo').getProp('bar')).to.equal('bar')
+    })
+
+    it('should copy key from original onto stub element', function () {
       expect(tree.get('foo').key).to.equal('foo')
+    })
+
+    it('should copy ref from original onto stub element', function () {
+      expect(tree.get('foo').ref).to.equal('foo')
     })
 
     it('should pass children to stub element', function () {
